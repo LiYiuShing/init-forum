@@ -3,7 +3,7 @@ import { ObjectType, Field } from 'type-graphql';
 
 @ObjectType()
 @Entity()
-export default class Post {
+export default class User {
   @Field()
   @PrimaryKey()
   id!: number;
@@ -16,7 +16,9 @@ export default class Post {
   @Property({ type: 'date', onUpdate: () => new Date() })
   updatedAt = new Date();
 
-  @Field()
+  @Property({ type: 'text', unique: true })
+  username!: string;
+
   @Property({ type: 'text' })
-  title!: string;
+  password!: string;
 }
