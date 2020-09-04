@@ -11,9 +11,11 @@ import microConfig from './mikro-orm.config';
 import PostResolver from './resolvers/post';
 import UserResolver from './resolvers/user';
 import { __prod__ } from './constant';
+import User from './entities/User';
 
 const main = async () => {
   const orm = await MikroORM.init(microConfig);
+  await orm.em.nativeDelete(User, {});
   await orm.getMigrator().up();
 
   const app = express();
