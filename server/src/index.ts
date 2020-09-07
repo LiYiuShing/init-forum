@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-import { MikroORM } from '@mikro-orm/core';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
@@ -7,14 +5,23 @@ import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
-import microConfig from './mikro-orm.config';
+import { createConnection } from 'typeorm';
 import PostResolver from './resolvers/post';
 import UserResolver from './resolvers/user';
 import { __prod__ } from './constant';
+import Post from './entities/Post';
+import User from './entities/User';
 
 const main = async () => {
-  const orm = await MikroORM.init(microConfig);
-  await orm.getMigrator().up();
+  await createConnection({
+    type: 'postgres',
+    database: 'init2',
+    username: 'root',
+    password: 'root',
+    logging: true,
+    synchronize: true,
+    entities: [Post, User],
+  });
 
   const app = express();
 
@@ -51,7 +58,6 @@ const main = async () => {
       validate: false,
     }),
     context: ({ req, res }) => ({
-      em: orm.em,
       req,
       res,
       redis,
