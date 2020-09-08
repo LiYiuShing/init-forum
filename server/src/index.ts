@@ -6,6 +6,7 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
+import path from 'path';
 import PostResolver from './resolvers/post';
 import UserResolver from './resolvers/user';
 import { __prod__ } from './constant';
@@ -13,25 +14,31 @@ import Post from './entities/Post';
 import User from './entities/User';
 
 const main = async () => {
-  await createConnection({
+  // tslint:disable-next-line
+  const conn = await createConnection({
     type: 'postgres',
     database: 'init2',
     username: 'root',
     password: 'root',
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, './migrations/*')],
     entities: [Post, User],
   });
+
+  await conn.runMigrations();
 
   const app = express();
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
-  app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    }),
+  );
 
   app.use(
     session({
