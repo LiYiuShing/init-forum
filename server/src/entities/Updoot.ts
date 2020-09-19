@@ -12,18 +12,20 @@ import Post from './Post';
 
 @Entity()
 export default class Updoot extends BaseEntity {
-  @Column({ type: 'int' })
-  value: number;
+    @Column({ type: 'int' })
+    value: number;
 
-  @PrimaryColumn()
-  userId: number;
+    @PrimaryColumn()
+    userId: number;
 
-  @ManyToOne(() => User, (user) => user.updoots)
-  user: User;
+    @ManyToOne(() => User, (user) => user.updoots)
+    user: User;
 
-  @PrimaryColumn()
-  postId: number;
+    @PrimaryColumn()
+    postId: number;
 
-  @ManyToOne(() => Post, (post) => post.updoots)
-  post: Post;
+    @ManyToOne(() => Post, (post) => post.updoots, {
+      onDelete: 'CASCADE',
+    })
+    post: Post;
 }
