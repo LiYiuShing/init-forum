@@ -22,15 +22,16 @@ https://redis.io/topics/quickstart
 $ redis-server
 ```
 
-2. BackEnd Server
+2. Set the .env
+
+3. BackEnd Server
 ```
 $ cd server
 $ npm install
 $ npm run dev2
 ```
 
-3. Frontend Server
-
+4. Frontend Server
 ```
 $ cd client
 $ npm install
