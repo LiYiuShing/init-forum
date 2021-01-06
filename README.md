@@ -1,4 +1,3 @@
-# A simple Blockchain in Javascript
 
 ## Introduction
 The project is reference to reddit to create a similar forum.
